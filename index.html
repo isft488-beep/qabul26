@@ -176,7 +176,7 @@
                 <div class="h-2 w-full md:w-32 bg-gray-200 rounded-full overflow-hidden">
                     <div id="progressBar" class="h-full bg-burgundy transition-all duration-300" style="width: 0%"></div>
                 </div>
-                <span id="progressText" class="text-[10px] font-black text-gray-400 uppercase text-center whitespace-nowrap">0 / 30 bajarildi</span>
+                <span id="progressText" class="text-[10px] font-black text-gray-400 uppercase text-center whitespace-nowrap">0 / 24 bajarildi</span>
             </div>
             <button id="finishBtn" onclick="submitTest()" class="w-full md:w-auto px-12 py-4 gradient-bg text-white rounded-2xl font-black shadow-lg hover:shadow-2xl transition-all uppercase tracking-widest text-xs">
                 Testni yakunlash
@@ -233,7 +233,7 @@
                     Siz <span class="text-gray-500 uppercase block mt-3 underline decoration-gray-200 decoration-8 underline-offset-4">ISFT</span> Institutiga talabalikka tavsiya etilmadingiz.
                 </p>
                 <div class="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 space-y-4 text-center">
-                    <p class="text-lg text-gray-600 italic leading-relaxed">To'plangan ball o'tish balidan kamroq. O'tish bali: 17 ball.</p>
+                    <p class="text-lg text-gray-600 italic leading-relaxed">To'plangan ball o'tish balidan kamroq. O'tish bali: 9 ball.</p>
                     <p class="text-gray-800 font-black text-xl" id="failedScore"></p>
                 </div>
                 <button onclick="window.location.reload()" class="w-full py-5 bg-gray-500 text-white rounded-2xl font-black shadow-xl hover:bg-gray-600 transition-all uppercase tracking-widest">
@@ -246,7 +246,7 @@
     <div id="confettiContainer" class="fixed inset-0 pointer-events-none z-[300]"></div>
 
     <script type="module">
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxDN6UgMorwK3rYGzDoiMDTkANBI6sktjo5Ot2nfrSzSx5COUDunjzho5MnlYcPk7z7/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz57v6aO9hzDnfzUa2MADZzmJaviCpAvjTFwYw3lLg4Vw9F6IVrBEp2kxAK-_MFC51R/exec';
 
         const regionsData = {
             "Qoraqalpog‘iston Respublikasi": ["Nukus shahri", "Amudaryo tumani", "Beruniy tumani", "Kegeyli tumani", "Qanliko‘l tumani", "Qorao‘zak tumani", "Qo‘ng‘irot tumani", "Mo‘ynoq tumani", "Nukus tumani", "Taxiatosh tumani", "Taxtako‘pir tumani", "To‘rtko‘l tumani", "Xo‘jayli tumani", "Chimboy tumani", "Sho‘manoy tumani", "Ellikqal’a tumani"],
@@ -269,7 +269,7 @@
 
         const restrictedMajors = ["Pedagogika", "Maktabgacha ta'lim", "Boshlang'ich ta'lim", "Xorijiy til va adabiyoti", "Filologiya va tillarni o'qitish", "Axborot xavfsizligi"];
 
-        // Savollar bazasi (8-9 sinf dasturi asosida tozalangan, 50 tadan har biriga)
+        // Savollar bazasi (8-9 sinf dasturi asosida tozalangan, yordamchi generator orqali ko'paytiriladi)
         const mathQuestions = [
             { q: "Kvadrat tenglamaning diskriminanti qanday topiladi?", options: ["D = b² - 4ac", "D = a² - 4bc", "D = c² - 4ab"], correct: 0 },
             { q: "Arifmetik progressiyada ketma-ket keluvchi ikkita hadning ayirmasi nima deyiladi?", options: ["Progressiya ayirmasi", "Progressiya mahraji", "Progressiya yig'indisi"], correct: 0 },
@@ -493,9 +493,9 @@
             const fd = new FormData(e.target);
             userData = Object.fromEntries(fd.entries());
             
-            // Random tarzda har bir fandan 10 tadan (jami 30 ta) savolni olish
+            // Random tarzda har bir fandan 8 tadan (jami 24 ta) savolni olish
             const pick = (arr, n) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
-            currentQuestions = [...pick(mathBank, 10), ...pick(nativeBank, 10), ...pick(englishBank, 10)];
+            currentQuestions = [...pick(mathBank, 8), ...pick(nativeBank, 8), ...pick(englishBank, 8)];
             
             renderQuestions();
             document.getElementById('registrationSection').classList.add('hidden');
@@ -513,7 +513,7 @@
                     
                     <div class="flex items-center justify-between mb-2">
                         <span class="px-3 py-1 bg-red-50 text-burgundy text-[10px] font-black rounded-lg uppercase tracking-widest">${q.cat}</span>
-                        <span class="text-gray-400 text-xs font-bold bg-gray-50 px-3 py-1 rounded-lg">Savol #${i + 1} / 30</span>
+                        <span class="text-gray-400 text-xs font-bold bg-gray-50 px-3 py-1 rounded-lg">Savol #${i + 1} / 24</span>
                     </div>
                     
                     <!-- Savol bloki ajralib turadi -->
@@ -547,8 +547,8 @@
             selectedBtn.classList.add('border-[#5c0028]', 'bg-red-50', 'text-burgundy', 'shadow-md', 'scale-[1.02]');
             
             const done = Object.keys(userAnswers).length;
-            document.getElementById('progressBar').style.width = `${(done / 30) * 100}%`;
-            document.getElementById('progressText').innerText = `${done} / 30 bajarildi`;
+            document.getElementById('progressBar').style.width = `${(done / 24) * 100}%`;
+            document.getElementById('progressText').innerText = `${done} / 24 bajarildi`;
         };
 
         const startTimer = () => {
@@ -562,8 +562,8 @@
         };
 
         window.submitTest = async () => {
-            if (Object.keys(userAnswers).length < 30 && timeLeft > 0) {
-                return alert("Iltimos, imtihonni yakunlash uchun barcha 30 ta savolga javob bering!");
+            if (Object.keys(userAnswers).length < 24 && timeLeft > 0) {
+                return alert("Iltimos, imtihonni yakunlash uchun barcha 24 ta savolga javob bering!");
             }
             clearInterval(timerInterval);
             const btn = document.getElementById('finishBtn');
@@ -585,15 +585,15 @@
                 await fetch(scriptURL, { method: 'POST', body: new URLSearchParams(payload) });
                 document.getElementById('testSection').classList.add('hidden');
                 
-                // O'tish bali: 17 ball (30 tadan)
-                if (score >= 17) {
+                // O'tish bali: 9 ball (24 tadan)
+                if (score >= 9) {
                     document.getElementById('resultSuccess').classList.remove('hidden');
                     document.getElementById('successMsg').innerHTML = `Hurmatli <b>${userData.lastName} ${userData.firstName}</b>, siz <b>${userData.major}</b> (${userData.studyType}) yo'nalishiga o'qishga tavsiya etildingiz!`;
-                    document.getElementById('successScore').innerText = `Natijangiz: 30 balldan ${score} ball`;
+                    document.getElementById('successScore').innerText = `Natijangiz: 24 balldan ${score} ball`;
                     createConfetti();
                 } else {
                     document.getElementById('resultFailed').classList.remove('hidden');
-                    document.getElementById('failedScore').innerText = `Siz 30 tadan faqat ${score} ta savolga to'g'ri javob berdingiz. O'tish bali 17 ball.`;
+                    document.getElementById('failedScore').innerText = `Siz 24 tadan faqat ${score} ta savolga to'g'ri javob berdingiz. O'tish bali 9 ball.`;
                 }
                 window.scrollTo(0, 0);
             } catch (e) { alert("Tarmoq xatosi. Internetni tekshiring."); btn.disabled = false; btn.innerText = "Testni yakunlash"; }
